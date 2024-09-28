@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -11,6 +8,9 @@ class Point:
 
     def __eq__(self, value: object) -> bool:
         if value == None:
+            return False
+
+        if not type(value) is Point:
             return False
 
         return self.x == value.x and self.y == value.y

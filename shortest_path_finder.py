@@ -1,5 +1,5 @@
+
 from graph.graph_node import GraphNode
-from point import Point
 
 
 class ShortestPathFinder:
@@ -25,7 +25,7 @@ class ShortestPathFinder:
     find_shortest_path() -> list[GraphNode]
 
         Finds the shortest path between the origin and the destination
-        and returns it as a list of the points that were traversed.
+        and returns it as a list of the nodes that were traversed.
 
     """
 
@@ -49,9 +49,9 @@ class ShortestPathFinder:
 
     def find_shortest_path(self) -> list[GraphNode]:
         """Finds the shortest path between the origin and the destination and
-        returns it as a list of the points that were traversed.
+        returns it as a list of the nodes that were traversed.
 
-        :returns: a list of the points that were traversed.
+        :returns: The shortest path as list of the nodes that were traversed.
         :rtype: list[GraphNode]
         """
 
@@ -60,30 +60,32 @@ class ShortestPathFinder:
         if path == None:
             return None
 
-        path.insert(0, self.origin.value)
+        path.insert(0, self.origin)
 
         return path
 
-    def __do_find_shortest_path(self, node: GraphNode) -> list[Point]:
+    def __do_find_shortest_path(self, node: GraphNode) -> list[GraphNode]:
         """Finds the shortest path between the given node and the destination.
 
         :param node: The node to start the path from.
         :type node: GraphNode
 
-        :returns: A list of the points that represent the shortest path.
-        :rtype: list[Point]
+        :returns: A list of the nodes that represent the shortest path.
+        :rtype: list[GraphNode]
         """
-        self.traversed_path.append(node.value)
+
+        self.traversed_path.append(node)
 
         neighbors = map(lambda e: e.node2, node.edges)
 
-        possible_paths: list[list[Point]] = []
+        possible_paths: list[list[GraphNode]] = []
 
         for neighbor in neighbors:
-            if neighbor.value == self.destination:
-                return [neighbor.value]
 
-            if self.__already_traveled(neighbor.value):
+            if neighbor == self.destination:
+                return [neighbor]
+
+            if self.__already_traveled(neighbor):
                 continue
 
             path = self.__do_find_shortest_path(neighbor)
@@ -91,7 +93,7 @@ class ShortestPathFinder:
             if path == None:
                 continue
 
-            path.insert(0, neighbor.value)
+            path.insert(0, neighbor)
 
             possible_paths.append(path)
 
@@ -106,17 +108,17 @@ class ShortestPathFinder:
 
         return shortest_path
 
-    def __already_traveled(self, point: Point) -> bool:
+    def __already_traveled(self, node: GraphNode) -> bool:
         """Determines if the given point has already been traversed.
 
-        :param point: The point to be checked.
-        :type point: Point
+        :param node: The node to be checked.
+        :type node: GraphNode
 
-        :returns: True if the point has already been traversed, false otherwise.
+        :returns: True if the node has already been traversed, false otherwise.
         :rtype: bool
         """
-        for traversed_point in self.traversed_path:
-            if traversed_point == point:
+        for traversed_node in self.traversed_path:
+            if traversed_node == node:
                 return True
 
         return False
