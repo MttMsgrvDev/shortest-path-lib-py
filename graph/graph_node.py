@@ -1,12 +1,15 @@
+from graph import GraphEdge
+
+
 class GraphNode:
     def __init__(self, value):
         self.value = value
         self.edges: list[GraphEdge] = []
 
-    def add_edge(self, edge):
+    def add_edge(self, edge: GraphEdge):
         self.edges.append(edge)
 
-    def remove_edge(self, edge):
+    def remove_edge(self, edge: GraphEdge):
         remove_index = -1
 
         for index, self_edge in self.edges:
@@ -23,18 +26,3 @@ class GraphNode:
 
     def __repr__(self) -> str:
         return f'({self.value}, {self.edges})'
-
-
-class GraphEdge:
-    def __init__(self, node1: GraphNode, node2: GraphNode, weight=None):
-        self.node1 = node1
-        self.node2 = node2
-        self.weight = weight
-
-    def __str__(self) -> str:
-        weight_str = '<---->'
-
-        if self.weight != None:
-            weight_str = f'<-- {self.weight} -->'
-
-        return f'({self.node1.value}) {weight_str} {self.node2.value}'
